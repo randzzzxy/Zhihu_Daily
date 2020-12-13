@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/dailyStoriesFragment">
+
+    <fragment
+        android:id="@+id/dailyStoriesFragment"
+        android:name="com.example.zhihudaily.Views.DailyStoriesFragment"
+        android:label="daily_stories_fragment"
+        tools:layout="@layout/daily_stories_fragment" />
+    <fragment
+        android:id="@+id/sectionsFragment"
+        android:name="com.example.zhihudaily.Views.SectionsFragment"
+        android:label="sections_fragment"
+        tools:layout="@layout/sections_fragment" >
+        <action
+            android:id="@+id/action_sectionsFragment_to_sectionFragment"
+            app:destination="@id/sectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/likeStoriesFragment"
+        android:name="com.example.zhihudaily.Views.LikeStoriesFragment"
+        android:label="like_stories_fragment"
+        tools:layout="@layout/like_stories_fragment" />
+    <fragment
+        android:id="@+id/sectionFragment"
+        android:name="com.example.zhihudaily.Views.SectionFragment"
+        android:label="section_fragment"
+        tools:layout="@layout/section_fragment" />
+</navigation>

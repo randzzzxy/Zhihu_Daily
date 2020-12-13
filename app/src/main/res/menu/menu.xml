@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dailyStoriesFragment"
+        android:icon="@drawable/stories_24"
+        android:title="故事" />
+    <item
+        android:id="@+id/sectionsFragment"
+        android:icon="@drawable/sections_24"
+        android:title="栏目" />
+    <item
+        android:id="@+id/likeStoriesFragment"
+        android:icon="@drawable/collections_24"
+        android:title="收藏" />
+</menu>
