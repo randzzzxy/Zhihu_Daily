@@ -23,5 +23,8 @@ class LikeStoriesViewModel(application: Application) : AndroidViewModel(applicat
             callback(it)
         }
     }
+    fun destroy(){
+        _storyRepository.destroy()
+    }
 
 }

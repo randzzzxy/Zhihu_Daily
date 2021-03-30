@@ -87,4 +87,8 @@ class LikeStoriesFragment : Fragment() {
         }).attachToRecyclerView(like_recyclerView)
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        viewModel.destroy()
+    }
 }

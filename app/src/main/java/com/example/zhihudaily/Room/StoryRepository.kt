@@ -21,12 +21,18 @@ class StoryRepository {
     }
 
     fun insertStories(vararg stories: MemoryItem, callback: (result:Boolean) -> Unit) {
-        InsertAsyncTask(callback).execute(*stories)
+        val task = InsertAsyncTask(callback).execute(*stories)
+        AsyncTaskUtil.addTask(stories,task)
     }
 
     fun deleteStories(vararg stories: MemoryItem,
                       callback: (result:Boolean) -> Unit) {
-        DeleteAsyncTask(callback).execute(*stories)
+        val task = DeleteAsyncTask(callback).execute(*stories)
+        AsyncTaskUtil.addTask(stories,task)
+    }
+
+    fun destroy(){
+        AsyncTaskUtil.destroy()
     }
 
 
