@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import com.example.zhihudaily.Models.MemoryItem
-import com.example.zhihudaily.Models.Section_Story
 import java.lang.Exception
 
 class StoryRepository {
@@ -22,16 +21,16 @@ class StoryRepository {
     }
 
     fun insertStories(vararg stories: MemoryItem, callback: (result:Boolean) -> Unit) {
-        insertAsyncTask(callback).execute(*stories)
+        InsertAsyncTask(callback).execute(*stories)
     }
 
     fun deleteStories(vararg stories: MemoryItem,
                       callback: (result:Boolean) -> Unit) {
-        deleteAsyncTask(callback).execute(*stories)
+        DeleteAsyncTask(callback).execute(*stories)
     }
 
 
-    class insertAsyncTask(callback1: (result:Boolean) -> Unit) : AsyncTask<MemoryItem?, Void?, Boolean?>() {
+    class InsertAsyncTask(callback1: (result:Boolean) -> Unit) : AsyncTask<MemoryItem?, Void?, Boolean?>() {
         lateinit var callBack:(result:Boolean) -> Unit
         init {
             callBack = callback1
@@ -53,7 +52,7 @@ class StoryRepository {
         }
     }
 
-    class deleteAsyncTask(callback1: (result:Boolean) -> Unit): AsyncTask<MemoryItem?, Void?, Boolean?>() {
+    class DeleteAsyncTask(callback1: (result:Boolean) -> Unit): AsyncTask<MemoryItem?, Void?, Boolean?>() {
         lateinit var callBack:(result:Boolean) -> Unit
         init {
             this.callBack = callback1
