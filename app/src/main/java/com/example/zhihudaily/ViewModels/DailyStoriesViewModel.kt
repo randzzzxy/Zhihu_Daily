@@ -12,6 +12,10 @@ import com.example.zhihudaily.Models.*
 import com.example.zhihudaily.Room.StoryRepository
 import com.example.zhihudaily.VolleySingleton
 import com.google.gson.Gson
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import java.io.IOException
 
 class DailyStoriesViewModel(application: Application) : AndroidViewModel(application) {
     //数据库
@@ -32,24 +36,26 @@ class DailyStoriesViewModel(application: Application) : AndroidViewModel(applica
     get() = _story_currentLive
 
     fun fetData(){
-        val stringRequest = StringRequest(
-            Request.Method.GET,
-            getUrl(),
-            Response.Listener {
-                //获取首页数据
-                _storiesListLive.value = Gson().fromJson(it,
-                    ZhihuDaily::class.java).stories.toList()
-                _topStoriesListLive.value = Gson().fromJson(it,
-                    ZhihuDaily::class.java).top_stories.toList()
-                Log.d("hello", (_storiesListLive.value!!.size).toString() + "")
-            },
-            Response.ErrorListener {
-                Log.d("hello",it.toString())
+        val client = OkHttpClient()
+        val request = okhttp3.Request.Builder().url(getUrl()).build()
+        val call = client.newCall(request)
+        call.enqueue(object : Callback{
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("hello",e.toString())
             }
-        )
-        VolleySingleton.getInstance(
-            getApplication()
-        ).requestQueue.add(stringRequest)
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                response.body?.string().let {
+                    Log.d("hello", it + "")
+                    //获取首页数据
+                    _storiesListLive.postValue(Gson().fromJson(it,
+                        ZhihuDaily::class.java).stories.toList())
+                    _topStoriesListLive.postValue(Gson().fromJson(it,
+                        ZhihuDaily::class.java).top_stories.toList())
+                }
+            }
+
+        })
     }
 
     fun fetData_stories(index:Int){

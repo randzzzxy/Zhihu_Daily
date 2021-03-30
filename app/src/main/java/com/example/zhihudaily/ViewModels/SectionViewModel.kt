@@ -16,6 +16,10 @@ import com.example.zhihudaily.Models.ZhihuDaily
 import com.example.zhihudaily.Room.StoryRepository
 import com.example.zhihudaily.VolleySingleton
 import com.google.gson.Gson
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import java.io.IOException
 
 class SectionViewModel(application: Application) : AndroidViewModel(application) {
     //数据库
@@ -27,21 +31,24 @@ class SectionViewModel(application: Application) : AndroidViewModel(application)
     get() = _sectionListLive
 
     fun fetData(index: Int){
-        val stringRequest = StringRequest(
-            Request.Method.GET,
-            getUrl(index),
-            Response.Listener {
-                //获取首页数据
-                _sectionListLive.value = Gson().fromJson(it,
-                    Section_List::class.java).stories.toList()
-            },
-            Response.ErrorListener {
-                Log.d("hello",it.toString())
+        val client = OkHttpClient()
+        val request = okhttp3.Request.Builder().url(getUrl(index)).build()
+        val call = client.newCall(request)
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("hello",e.toString())
             }
-        )
-        VolleySingleton.getInstance(
-            getApplication()
-        ).requestQueue.add(stringRequest)
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                response.body?.string().let {
+                    Log.d("hello", it + "")
+                    //获取首页数据
+                    _sectionListLive.value = Gson().fromJson(it,
+                        Section_List::class.java).stories.toList()
+                }
+            }
+
+        })
     }
 
 
