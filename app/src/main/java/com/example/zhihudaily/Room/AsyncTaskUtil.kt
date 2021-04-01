@@ -31,6 +31,15 @@ class AsyncTaskUtil {
                 }
             }
         }
+
+        fun removeTask(tag: String, task: AsyncTask<MemoryItem?, Void?, Boolean?>){
+            var map = taskMap.get(tag.toString())
+            if (null == map) {
+                return
+            } else {
+                map.remove(task.hashCode())
+            }
+        }
     }
 
 }

@@ -38,10 +38,12 @@ class StoryRepository {
 
     class InsertAsyncTask(callback1: (result:Boolean) -> Unit) : AsyncTask<MemoryItem?, Void?, Boolean?>() {
         lateinit var callBack:(result:Boolean) -> Unit
+        lateinit var tag : String
         init {
             callBack = callback1
         }
         override fun doInBackground(vararg stories: MemoryItem?): Boolean? {
+            tag = stories.hashCode().toString()
             try {
                 storyDao.insertItems(*stories)
             }catch (e : Exception){
@@ -55,16 +57,18 @@ class StoryRepository {
             if (result != null) {
                 callBack(result)
             }
+            AsyncTaskUtil.removeTask(tag,this)
         }
     }
 
     class DeleteAsyncTask(callback1: (result:Boolean) -> Unit): AsyncTask<MemoryItem?, Void?, Boolean?>() {
         lateinit var callBack:(result:Boolean) -> Unit
+        lateinit var tag : String
         init {
             this.callBack = callback1
         }
         override fun doInBackground(vararg stories: MemoryItem?): Boolean? {
-
+            tag = stories.hashCode().toString()
             try {
                 storyDao.deleteWords(*stories)
             }catch (e : Exception){
@@ -78,6 +82,7 @@ class StoryRepository {
             if (result != null) {
                 callBack(result)
             }
+            AsyncTaskUtil.removeTask(tag,this)
         }
     }
 
